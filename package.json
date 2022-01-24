@@ -1,0 +1,13 @@
+{
+  "name": "tp-lfa",
+  "version": "1.0.0",
+  "description": "GLC G -> GLC G' (forma formal de chomsky)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "test:first": "node dist/index.js ../exemplos/primeiro.json"
+  },
+  "author": "Lucas Cota e Bruna Gomes",
+  "license": "ISC"
+}
