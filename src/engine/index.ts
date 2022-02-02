@@ -51,3 +51,7 @@ class Chomsky {
 
     }
 }
+
+export {
+    Chomsky
+}

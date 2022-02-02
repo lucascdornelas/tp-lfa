@@ -13,6 +13,37 @@ class SanitizeEngine {
         this.starter = starter;
     }
 
+    private containRuleLambda(rule: IRule, rulesWithLambda: IRule[]) {
+        // "asdada".includes()
+        // rule[1].forEach(symbol => {
+        //     return rulesWithLambda.includes(symbol)
+        // });
+
+        return undefined;
+    }
+
+    private removeLambda() {
+        const rulesWithLambda:IRule[] = [];
+        this.rules.forEach(rule => {
+            if(rule[1] === "#"){
+                rulesWithLambda.push(rule[0]);
+            }
+        });
+
+        const rulesWithLambdaCopy:IRule[] = [...rulesWithLambda];
+        while (true) {
+            const lengthLambdaOld = rulesWithLambdaCopy.length;
+            this.rules.forEach(rule => {
+                if(this.containRuleLambda(rule, rulesWithLambdaCopy))
+                return undefined;
+            });
+        }
+
+
+        console.log("rules with lambda: ", rulesWithLambda);
+
+    }
+
     /**
      * sanitize
      */
@@ -21,6 +52,7 @@ class SanitizeEngine {
         const variablesSanitize: IVariable[] = this.variables;
 
         // todo: implement method
+        this.removeLambda();
 
         return[rulesSanitize, variablesSanitize];
     }
