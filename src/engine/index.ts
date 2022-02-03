@@ -1,6 +1,6 @@
 import { LAMBDA, S } from "../const";
 import { IGLC, IRule, IStarter, ITerminal, IVariable } from "../types";
-import { copyStructured, hasLAMBDA } from "../utils";
+import { copyStructured, hasLAMBDA, removeRulesDuplicated } from "../utils";
 // import { SanitizeEngine } from "./SanitizeEngine";
 
 
@@ -18,7 +18,6 @@ class Chomsky {
         const res: string[] = [];
         const idxs: number[] = [];
 
-        console.log("0: ",res);
     
         for (let i = 0; i < s.length; i++) {
             if (s[i] === nullState) idxs.push(i);
@@ -29,7 +28,6 @@ class Chomsky {
             res.push(newS.join(''));
         }
 
-        console.log("1: ",res);
     
         const lastS = [...s];
         for (let i = 0; i < idxs.length; i++) {
@@ -39,7 +37,6 @@ class Chomsky {
         lastS.filter(el => el);
         res.push(lastS.join(''));
 
-        console.log("3: ",res);
     
         return res;
     };
@@ -55,21 +52,34 @@ class Chomsky {
     
                 const state = arr[i];
                 let splitedState = state.split('');
+                
     
                 if (splitedState.includes(nullState)) {
     
                     if (splitedState.length === 1) {
-                        // S -> A and A -> LAMBDA
-                        if (s === S) console.log(`\x1b[33m \n ${S} -> ${LAMBDA} will not be included in next table! \x1b[0m`);
-                        // A -> C and C -> LAMBDA, will add A -> LAMBDA
-                        else glc[s].push(LAMBDA);
+                        // A -> B, A != P (P pode ter #)
+                        // B -> #
+                        if (s !== S) {
+                            glc[s].push(LAMBDA);
+                        }
                     }
     
-                    // S -> Aa and A -> LAMBDA, will add S -> a
                     if (splitedState.length === 2) {
+                        // S -> Aa ====> S -> Aa | a
+                        // A -> # 
+
+                        // A -> BB ====> S -> BB | B | #
+                        // B -> # 
                         const state = splitedState.filter((el: string) => el !== nullState);
-                        if(state.length){
-                            glc[s].push(state.join(''));
+
+                        switch (state.length) {
+                            case 1:
+                                glc[s].push(state.join(''));
+                                break;
+                            case 0:
+                                glc[s].push(splitedState[0]);
+                                // glc[s].push(LAMBDA)
+                                break;
                         }
                     }
     
@@ -81,9 +91,11 @@ class Chomsky {
                         // will add S -> CC for all cases
                         if (count === 1) {
                             const state = splitedState.filter((el: string) => el !== nullState);
-                            if(state.length){
+                            // if(state.length){
                                 glc[s].push(state.join(''));
-                            }
+                            // }else {
+                                // glc[s].push(LAMBDA)
+                            // }
                         }
     
                         // S -> ABA and A -> LAMBDA, will add S -> AB | BA | B
@@ -99,12 +111,14 @@ class Chomsky {
             }
     
         }
+
+        glc = removeRulesDuplicated(glc);
+
     
         if (hasLAMBDA(glc)) {
             return this.removeRegrasLambda(glc);
         }
 
-        console.log("removeNulls: ", glc);
     
         return glc;
     };
@@ -115,6 +129,8 @@ class Chomsky {
 
             
             let arr = glcCopy[s];
+
+            
             for (let i = 0; i < arr.length; i++) {
                 
                 if (arr[i] === LAMBDA) {

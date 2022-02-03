@@ -15,3 +15,14 @@ export const hasLAMBDA = (glc: IGLC): boolean => {
     }
     return false;
 };
+
+export const removeRulesDuplicated = (glc: IGLC): IGLC => {
+    const copyGlc = copyStructured(glc);
+    for (let s in copyGlc) {
+        let arr = copyGlc[s];
+        
+        copyGlc[s] = [...new Set(arr)];
+    }
+
+    return copyGlc
+}

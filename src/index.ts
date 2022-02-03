@@ -28,9 +28,6 @@ const main = () => {
   */
   const parsedGLC:IGLC = parserGLC(variables, rules);
   
-  console.log(parsedGLC);
-
-
   // 3: mount and run Chomsky engine
   const chomskyEngine = new Chomsky(parsedGLC);
   chomskyEngine.run() 
