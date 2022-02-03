@@ -41,7 +41,7 @@ class Chomsky {
         return res;
     };
 
-    private updateNull = (grammar: IGLC, nullState: string): IGLC => {
+    private updateNullRules = (grammar: IGLC, nullState: string): IGLC => {
 
         let glc = copyStructured(grammar);
 
@@ -78,7 +78,6 @@ class Chomsky {
                                 break;
                             case 0:
                                 glc[s].push(splitedState[0]);
-                                // glc[s].push(LAMBDA)
                                 break;
                         }
                     }
@@ -87,18 +86,11 @@ class Chomsky {
                         let count = 0;
                         splitedState.map((el: string) => { if (el === nullState) count++; });
     
-                        // S -> ACC || S -> CAC || S -> CCA and A -> LAMBDA
-                        // will add S -> CC for all cases
                         if (count === 1) {
                             const state = splitedState.filter((el: string) => el !== nullState);
-                            // if(state.length){
                                 glc[s].push(state.join(''));
-                            // }else {
-                                // glc[s].push(LAMBDA)
-                            // }
                         }
     
-                        // S -> ABA and A -> LAMBDA, will add S -> AB | BA | B
                         else {
                             const newCombinations: Array<string> = this.makeCombinations(splitedState, nullState);
                             glc[s] = [...glc[s], ...newCombinations];
@@ -135,7 +127,7 @@ class Chomsky {
                 
                 if (arr[i] === LAMBDA) {
                     glcCopy[s] = glcCopy[s].filter((el: string) => el !== LAMBDA);
-                    return this.updateNull(glcCopy, s);
+                    return this.updateNullRules(glcCopy, s);
                 }
 
             }
@@ -145,32 +137,13 @@ class Chomsky {
         return glcCopy;
     }
 
-    private changeRules(sanitizeRules: IRule[], sanitizeVariables: IVariable[]) {
-        const changedRules: IRule[] = sanitizeRules;
-        const changedVariables: IVariable[] = sanitizeVariables;
-
-        // todo: implement method
-
-        return[changedRules, changedVariables];
-    }
-
-    private createAnswer(variables: IVariable[], terminals: ITerminal[], rules: IRule[], starter: IStarter) {
-        let answer: any;
-        let newVariables: any;
-
-        // todo: implement method
-
-        return [answer, newVariables]
-    }
-
     /**
      * run
      */
     public run() {
         const glc1 = this.removeRegrasLambda(this.glc);
 
-        console.log(glc1);
-
+        console.log("1. remove regras lambda: ", glc1);
     }
 }
 
