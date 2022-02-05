@@ -26,3 +26,7 @@ export const removeRulesDuplicated = (glc: IGLC): IGLC => {
 
     return copyGlc
 }
+
+export const isTerminal = (l: string):boolean => {
+    return l.toLowerCase() === l;
+}
