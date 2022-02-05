@@ -16,29 +16,32 @@ const geraTerminalDiretamente = (v: string, glc: IGLC) => {
 };
 
 const geraTerminalIndiretamente = (rules: any, glcS: IGLC): boolean => {
+  let retorno = false;
   rules.forEach((rule: string) => {
     for (const v in glcS) {
       if (rule.includes(v)) {
-          for(let i = 0; i < glcS[v].length; i++){
-              const ruleReplaceByV = rule.replace(v, glcS[v][i]);
-              console.log(v, ruleReplaceByV);
+        for (let i = 0; i < glcS[v].length; i++) {
+          const ruleReplaceByV = rule.replace(v, glcS[v][i]);
+          if (isTerminal(ruleReplaceByV)) {
+            retorno = true;
           }
+        }
       }
     }
   });
 
-  return false;
+  return retorno;
 };
 
 export const removerRegrasInuteis = (glc: IGLC): IGLC => {
-  // const glcCopy = copyStructured(glc);
-  const glcCopy: IGLC = {
-    S: ["aS", "A", "C"],
-    A: ["a"],
-    B: ["aaD"],
-    C: ["aCD"],
-    D: ["bD", ""],
-  };
+  const glcCopy = copyStructured(glc);
+//   const glcCopy: IGLC = {
+//     S: ["aS", "A", "C"],
+//     A: ["a"],
+//     B: ["aaD"],
+//     C: ["aCD"],
+//     D: ["bD", ""],
+//   };
   const glcReturn: IGLC = {};
 
   // 1ª etapa: verificar se gera um terminal diretamente
@@ -51,9 +54,27 @@ export const removerRegrasInuteis = (glc: IGLC): IGLC => {
   // 2ª etapa: verificar se gera um terminal indiretamente
   for (const v in glcCopy) {
     if (!glcReturn[v]) {
-        console.log(v)
       if (geraTerminalIndiretamente(glcCopy[v], glcReturn)) {
+        glcReturn[v] = [...glcCopy[v]];
       }
+    }
+  }
+
+  // 3ª etapa: remove os regras de variável removida.
+  for(const v in glcCopy){
+    if(!glcReturn[v]){
+        for(const s in glcReturn){
+            let arr = glcReturn[s];
+            const newArr = [];
+            for(let i = 0; i < arr.length; i++){
+                const rule = arr[i];
+                if(!rule.includes(v)){
+                    newArr.push(rule);
+                }
+            }
+
+            glcReturn[s] = [...newArr];
+        }
     }
   }
 

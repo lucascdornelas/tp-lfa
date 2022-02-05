@@ -61,5 +61,3 @@ export const getNewStateKey = (glc: IGLC, combination: string, type: stateType):
     // otherwise will return a new key from corresponding alphabet
     return alphabet[Math.floor(Math.random() * alphabet.length)];
 };
-
-export default getNewStateKey;

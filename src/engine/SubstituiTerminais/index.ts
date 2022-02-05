@@ -1,5 +1,5 @@
 import { IGLC, stateType } from "../../types";
-import getNewStateKey, { copyStructured, isTerminal } from "../../utils";
+import { copyStructured, isTerminal, getNewStateKey } from "../../utils";
 
 const substituteTerminals = (glc: IGLC): IGLC => {
   const copyGlc = copyStructured(glc);
