@@ -7,7 +7,11 @@ type IGLC = {
     [key: string]: Array<string>
 }
 
+enum stateType {
+    TERMINAL,
+    NON_TERMINAL
+}
 
 export {
-    IVariable, ITerminal, IRule, IStarter, IGLC
+    IVariable, ITerminal, IRule, IStarter, IGLC, stateType
 }
