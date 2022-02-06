@@ -1,63 +1,78 @@
-import v8 from 'v8';
-import { LAMBDA, S } from '../const';
+import v8 from "v8";
+import { LAMBDA, S } from "../const";
 import { IGLC, stateType } from "../types";
 
 export const copyStructured = (glc: IGLC) => {
-    return v8.deserialize(v8.serialize(glc));
-}
+  return v8.deserialize(v8.serialize(glc));
+};
 
 export const hasLAMBDA = (glc: IGLC): boolean => {
-    for (let s in glc) {
-        let arr = glc[s];
-        for (let el of arr) {
-            if (el === LAMBDA && s !== S) return true;
-        }
+  for (let s in glc) {
+    let arr = glc[s];
+    for (let el of arr) {
+      if (el === LAMBDA && s !== S) return true;
     }
-    return false;
+  }
+  return false;
 };
 
 export const removeRulesDuplicated = (glc: IGLC): IGLC => {
-    const copyGlc = copyStructured(glc);
-    for (let s in copyGlc) {
-        let arr = copyGlc[s];
-        
-        copyGlc[s] = [...new Set(arr)];
-    }
+  const copyGlc = copyStructured(glc);
+  for (let s in copyGlc) {
+    let arr = copyGlc[s];
 
-    return copyGlc
+    copyGlc[s] = [...new Set(arr)];
+  }
+
+  return copyGlc;
+};
+
+export const isTerminal = (l: string): boolean => {
+  return l.toLowerCase() === l;
+};
+
+const getVariables = (glc: IGLC) => {
+    const variables = [];
+    for (const v in glc) {
+        variables.push(v);
+    }
+    return variables;
 }
 
-export const isTerminal = (l: string):boolean => {
-    return l.toLowerCase() === l;
-}
+export const getNewStateKey = (glc: IGLC, combination: string): string => {
+  let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  
+  // nova proxima chave
+  let t = "";
+  const variables = getVariables(glc);
+  for (let i = 0; i < alphabet.length; i++) {
+      const v = alphabet[i];
+      if(!variables.includes(v)){
+        t = v;
+        i = alphabet.length;
+      }
+  }
 
-export const getNewStateKey = (glc: IGLC, combination: string, type: stateType): string => {
-    // one alphabet for terminals, e.g: X -> a
-    // one alphabet for NonTerminals, e.g: M: AB
-    let alphabet: string;
+  // se a regra com apenas uma derivação terminal
+  for (let s in glc) {
+    const arr = glc[s];
+    if (arr.length === 1 && arr[0] === combination) t = s;
+  }
 
-    switch (type) {
+  return t;
+};
 
-        case stateType.TERMINAL:
-            alphabet = 'ABCDEFG';
-            // if the state with only one terminal derivation already exists 
-            // return it
-            for (let s in glc) {
-                const arr = glc[s];
-                if (arr.length === 1 && arr[0] === combination) return s;
-            }
-            break;
+export const getNewTerminal = (glc: IGLC) => {
+  const alphabet = "ABCDEFGHIJK";
+  const splitedAlphabet = alphabet.split("");
 
-        case stateType.NON_TERMINAL:
-            alphabet = 'MNIOPT';
-            for (let s in glc) {
-                const arr = glc[s];
-                if (arr.length === 1 && arr[0] === combination) return s;
-            }
-            break;
+  const terminals = Object.keys(glc);
 
+  for (const s in splitedAlphabet) {
+    if (!terminals.includes(s)) {
+      return s;
     }
+  }
 
-    // otherwise will return a new key from corresponding alphabet
-    return alphabet[Math.floor(Math.random() * alphabet.length)];
+  return splitedAlphabet[0];
 };

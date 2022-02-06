@@ -1,27 +1,32 @@
-import { IGLC, stateType } from "../../types";
+import { IGLC } from "../../types";
 import { copyStructured, isTerminal, getNewStateKey } from "../../utils";
 
 const substituteTerminals = (glc: IGLC): IGLC => {
   const copyGlc = copyStructured(glc);
+
   for (let s in copyGlc) {
+    
     const arr = copyGlc[s];
-    for (let state of arr) {
-      let splitedState = state.split("");
-      if (splitedState.length > 1) {
-        for (let el of splitedState) {
-          // for S -> aA like transitions
+    
+    for (let rule of arr) {
+      let splitedRule = rule.split("");
+      if (splitedRule.length >= 2) {
+        
+        for (let el of splitedRule) {
+          
+          // A -> aA
           if (isTerminal(el)) {
-            // get new /already used , key from grammar
-            // delete S -> aA
-            // add S -> XA
-            // add X -> a
-            let tKey = getNewStateKey(glc, el, stateType.TERMINAL);
+            // A -> XA
+            // X -> a
+
+            let tKey = getNewStateKey(copyGlc, el);
+
             copyGlc[tKey] = [el];
             const filtered = copyGlc[s].filter(
-              (el:string) => el !== splitedState.join("")
+              (el:string) => el !== splitedRule.join("")
             );
-            splitedState[splitedState.indexOf(el)] = tKey;
-            filtered.push(splitedState.join(""));
+            splitedRule[splitedRule.indexOf(el)] = tKey;
+            filtered.push(splitedRule.join(""));
             copyGlc[s] = filtered;
           }
         }
