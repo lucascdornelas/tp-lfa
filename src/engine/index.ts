@@ -2,7 +2,7 @@ import { IGLC, } from "../types";
 import { removeRegrasLambda } from "./RemoveRegasLambda";
 import { removerRegrasUnitarias } from "./RemoveRegrasUnitarias";
 import { removerRegrasInuteis } from "./RemoverVariaveisInuteis";
-import substituteTerminals from "./SubstituiTerminais";
+import modificarRegras from "./ModificarRegras";
 
 
 class Chomsky {
@@ -25,7 +25,7 @@ class Chomsky {
         const glc3 = removerRegrasInuteis(glc2);
         console.log("3. remove regras inuteis: ", glc3);
         
-        const glc4 = substituteTerminals(glc3);
+        const glc4 = modificarRegras(glc3);
         console.log("4. substitui terminal: ", glc4);
     }
 }

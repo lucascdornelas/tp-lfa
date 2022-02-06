@@ -1,6 +1,6 @@
 import v8 from "v8";
 import { LAMBDA, S } from "../const";
-import { IGLC, stateType } from "../types";
+import { IGLC } from "../types";
 
 export const copyStructured = (glc: IGLC) => {
   return v8.deserialize(v8.serialize(glc));

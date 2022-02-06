@@ -1,7 +1,7 @@
 import { IGLC } from "../../types";
 import { copyStructured, isTerminal, getNewStateKey } from "../../utils";
 
-const substituteTerminals = (glc: IGLC): IGLC => {
+const modificarRegras = (glc: IGLC): IGLC => {
   const copyGlc = copyStructured(glc);
 
   for (let s in copyGlc) {
@@ -37,4 +37,4 @@ const substituteTerminals = (glc: IGLC): IGLC => {
   return copyGlc;
 };
 
-export default substituteTerminals;
+export default modificarRegras;
