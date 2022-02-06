@@ -3,6 +3,7 @@ import { removeRegrasLambda } from "./RemoveRegasLambda";
 import { removerRegrasUnitarias } from "./RemoveRegrasUnitarias";
 import { removerRegrasInuteis } from "./RemoverVariaveisInuteis";
 import modificarRegras from "./ModificarRegras";
+import { substituirRegras } from "./SubstituirRegras";
 
 
 class Chomsky {
@@ -26,7 +27,10 @@ class Chomsky {
         console.log("3. remove regras inuteis: ", glc3);
         
         const glc4 = modificarRegras(glc3);
-        console.log("4. substitui terminal: ", glc4);
+        console.log("4. modificar regras: ", glc4);
+
+        const glc5 = substituirRegras(glc4);
+        console.log("5. substitui regras: ", glc5);
     }
 }
 

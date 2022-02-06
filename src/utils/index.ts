@@ -76,3 +76,14 @@ export const getNewTerminal = (glc: IGLC) => {
 
   return splitedAlphabet[0];
 };
+
+export const hasMultipleNonTerminalTransitions = (glc: IGLC): boolean => {
+    for (let s in glc) {
+        const arr = glc[s];
+        for (let state of arr) {
+            let splitedState = state.split('');
+            if (splitedState.length > 2) return true;
+        }
+    }
+    return false;
+};
