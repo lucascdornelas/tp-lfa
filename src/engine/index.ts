@@ -25,8 +25,8 @@ class Chomsky {
         const glc3 = removerRegrasInuteis(glc2);
         console.log("3. remove regras inuteis: ", glc3);
         
-        // const glc4 = substituteTerminals(glc2);
-        // console.log("4. substitui terminal: ", glc4);
+        const glc4 = substituteTerminals(glc3);
+        console.log("4. substitui terminal: ", glc4);
     }
 }
 

@@ -39,7 +39,7 @@ export const getNewStateKey = (glc: IGLC, combination: string, type: stateType):
     switch (type) {
 
         case stateType.TERMINAL:
-            alphabet = 'XYZQ';
+            alphabet = 'ABCDEFG';
             // if the state with only one terminal derivation already exists 
             // return it
             for (let s in glc) {
