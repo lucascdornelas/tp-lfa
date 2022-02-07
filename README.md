@@ -9,6 +9,10 @@
 3. Instale as dependências: `npm install`
 4. Execute a partir do comando `npm start ./exemplo.json`.
 
+### Observação:
+
+> É necessário ter o node instalado, no nosso caso estamos usando a versão v16.13.2.
+
 ## Realizado por:
 
 [**Lucas C. Dornelas**](https://github.com/lucascdornelas) e [**Bruna Gomes Camilo**](https://github.com/BrunaGomes01)
