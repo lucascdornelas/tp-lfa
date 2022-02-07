@@ -7,7 +7,7 @@
 1. Clone o projeto: `git clone https://github.com/lucascdornelas/tp-lfa`
 2. Abra a pasta do projeto: `cd tp-lfa`
 3. Instale as dependências: `npm install`
-4. Execute a partir do comando `npm install ./exemplo.json`.
+4. Execute a partir do comando `npm start ./exemplo.json`.
 
 ## Realizado por:
 
