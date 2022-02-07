@@ -6,8 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
+    "start": "ts-node --transpile-only index.ts",
     "test:first": "node dist/index.js ../exemplos/primeiro.json"
   },
   "author": "Lucas Cota e Bruna Gomes",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "ts-node": "^10.5.0"
+  }
 }
